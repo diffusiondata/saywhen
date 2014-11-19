@@ -1,0 +1,23 @@
+{
+  "name": "saywhen",
+  "version": "0.0.1",
+  "description": "Better spy fake calls for Jasmine",
+  "keywords" : ["jasmine", "spy", "fake", "mock"],
+  "homepage" : "https://github.com/pushtechnology/saywhen",
+  "repository" : { 
+    "type" : "git",
+    "url" : "https://github.com/pushtechnology/saywhen.git"
+  },
+  "author" : "Peter Hughes",
+
+  "license" : "Apache-2.0",
+    
+  "main" : "saywhen.js",
+  "files" : ["README.md", "LICENSE.txt", "saywhen.js", "spec"],
+
+  "scripts" : {
+  },
+
+  "dependencies" : {
+  } 
+}
