@@ -48,7 +48,7 @@ var spy = jasmine.createSpy('foo');
 when(spy).isCalledWith('foo').thenReturn('bar');
 ```
 
-**Make a spy call a particular function, when called with a specific argument **
+**Make a spy call a particular function, when called with a specific argument**
 
 ```javascript
 when(spy).isCalledWith('bar').then(function(arg) {
@@ -67,11 +67,13 @@ when(spy).isCalledWith('baz').thenThrow(new Error());
 ```javascript
 when(spy).isCalledWith().thenReturn(1)
                         .thenReturn(2)
-                        .thenReturn(3);
+                        .thenReturn(3)
+                        .thenThrow(new Error('eof'));
                         
 spy(); // => 1
 spy(); // => 2
 spy(); // => 3
+spy(); // Throws error
 ```
 
 ---
