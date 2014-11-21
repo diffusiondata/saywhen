@@ -52,7 +52,7 @@ when(spy).isCalledWith('foo').thenReturn('bar');
 
 ```javascript
 when(spy).isCalledWith('bar').then(function(arg) {
-    // Do something
+    // Do something with arg
 });
 ```
 
@@ -60,6 +60,21 @@ when(spy).isCalledWith('bar').then(function(arg) {
 
 ```javascript
 when(spy).isCalledWith('baz').thenThrow(new Error());
+```
+
+**Works with jasmine.any & jasmine.objectContaining**
+
+```javascript
+when(spy).isCalledWith(jasmine.any(String)).thenReturn("string!");
+when(spy).isCalledWith(jasmine.objectContaining({
+    foo : "bar"
+})).thenReturn("object!");
+
+spy('abc'); // => string!
+spy({
+    foo : "bar",
+    bing : "bang"
+});         // => object!
 ```
 
 **Multiple callbacks can be added and will be executed in order**
