@@ -1,11 +1,12 @@
 saywhen
 =======
+[![Build Status](https://travis-ci.org/pushtechnology/saywhen.svg?branch=master)](https://travis-ci.org/pushtechnology/saywhen)
 
-Provides conditional fake calls for Jasmine 2 spies.
+Top up your Jasmine spies with better fake calls.
 
 Motivated by the fact that using spies in Jasmine requires a lot of boilerplate to perform different actions depending on provided arguments.
 
-Heavily influenced by the [Mockito](https://github.com/mockito/mockito) library for Java.
+Currently supports Jasmine 2 only. Heavily influenced by the [Mockito](https://github.com/mockito/mockito) library for Java.
 
 ---
 
@@ -90,6 +91,14 @@ spy(); // => 2
 spy(); // => 3
 spy(); // Throws error
 ```
+
+---
+
+###Contributing
+
+Say When is an open source project, maintained by Push Technology. Issues and pull requests are welcomed.
+
+Tests can be run by installing a dev dependencies with ```npm install``` and then running ```npm test```
 
 ---
 
