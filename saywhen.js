@@ -88,6 +88,7 @@ function CallHandler(spy) {
     };
 
     this.isCalled = proxy(defaultSet);
+    spy.and.callFake = this.isCalled.then;
 }
 
 function when(spy) {

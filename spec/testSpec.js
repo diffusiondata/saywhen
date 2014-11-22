@@ -172,6 +172,17 @@ describe("a test spy", function() {
         expect(spy("baz")).toBe("bing");
     });
 
+    it("proxies and.callFake behaviour", function() {
+        when(spy).isCalledWith('foo').thenReturn('bar');
+        
+        spy.and.callFake(function() {
+            return 123;
+        });
+
+        expect(spy('foo')).toBe('bar');
+        expect(spy()).toBe(123);
+    });
+
     it("can assign multiple argument matchers", function() {
         when(spy).isCalledWith(jasmine.any(String)).then(function() {
             return "string";
