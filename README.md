@@ -15,21 +15,21 @@ Currently supports Jasmine 2 only. Heavily influenced by the [Mockito](https://g
 ```javascript
 spy.and.callFake = function(arg) {
     if (arg === 'something') {
-		    return 'a value';
-		} else if (arg === 'something else') {
-		    return 'a different value';
-		} else {
-		    throw new Error('some error');
-		}
+	    return 'a value';
+	} else if (arg === 'something else') {
+	    return 'a different value';
+	} else {
+	    throw new Error('some error');
+	}
 };
 ```
 
 *... into this*
 
 ```javascript
+when(spy).isCalled.thenThrow(new Error('some error'));
 when(spy).isCalledWith('something').thenReturn('a value');
-when(spy).isCalledWith('something else').thenReturn('a value');
-when(spy).isCalledWith(jasmine.any(Object)).thenThrow(new Error('some error'));
+when(spy).isCalledWith('something else').thenReturn('a different value');
 ```
 
 ---
@@ -89,10 +89,10 @@ spy({ foo : "bar" });       // => object!
 **Multiple callbacks can be added and will be executed in order**
 
 ```javascript
-when(spy).isCalledWith().thenReturn(1)
-                        .thenReturn(2)
-                        .thenReturn(3)
-                        .thenThrow(new Error('eof'));
+when(spy).isCalled.thenReturn(1)
+                  .thenReturn(2)
+                  .thenReturn(3)
+                  .thenThrow(new Error('eof'));
                         
 spy(); // => 1
 spy(); // => 2
