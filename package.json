@@ -1,6 +1,6 @@
 {
   "name": "saywhen",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Better spy fake calls for Jasmine",
   "keywords": [
     "jasmine",
