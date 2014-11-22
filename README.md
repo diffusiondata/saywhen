@@ -49,6 +49,17 @@ var spy = jasmine.createSpy('foo');
 when(spy).isCalledWith('foo').thenReturn('bar');
 ```
 
+**Mix default handlers and specific handlers**
+
+```javascript
+when(spy).isCalled.thenReturn(1);
+when(spy).isCalledWith('two').thenReturn(2);
+
+spy();      // => 1
+spy('bar'); // => 1
+spy('two'); // => 2
+```
+
 **Make a spy call a particular function, when called with a specific argument**
 
 ```javascript
@@ -71,11 +82,8 @@ when(spy).isCalledWith(jasmine.objectContaining({
     foo : "bar"
 })).thenReturn("object!");
 
-spy('abc'); // => string!
-spy({
-    foo : "bar",
-    bing : "bang"
-});         // => object!
+spy('abc');                 // => string!
+spy({ foo : "bar" });       // => object!
 ```
 
 **Multiple callbacks can be added and will be executed in order**

@@ -37,8 +37,32 @@ function MatcherSet(matchers) {
     };
 }
 
+function proxy(matcher) {
+    return {
+        then : function(fn) {
+            matcher.addResponse(fn);
+            return this;
+        },
+        thenReturn : function(val) {
+            matcher.addResponse(function() {
+                return val;
+            });
+
+            return this;
+        },
+        thenThrow : function(err) {
+            matcher.addResponse(function() {
+                throw err;
+            });
+
+            return this;
+        }
+    };
+}
+
 function CallHandler(spy) {
     var matchers = [];
+    var defaultSet = new MatcherSet();
 
     spy.and.callFake(function() {
         var args = Array.prototype.slice.call(arguments, 0);
@@ -50,6 +74,8 @@ function CallHandler(spy) {
                 return set.apply(args);
             }
         }
+
+        return defaultSet.apply(args);
     });
 
     this.isCalledWith = function() {
@@ -58,27 +84,10 @@ function CallHandler(spy) {
         var matcher = new MatcherSet(args);
         matchers.push(matcher);
 
-        return {
-            then : function(fn) {
-                matcher.addResponse(fn);
-                return this;
-            },
-            thenReturn : function(val) {
-                matcher.addResponse(function() {
-                    return val;
-                });
-
-                return this;
-            },
-            thenThrow : function(err) {
-                matcher.addResponse(function() {
-                    throw err;
-                });
-
-                return this;
-            }
-        };
+        return proxy(matcher);
     };
+
+    this.isCalled = proxy(defaultSet);
 }
 
 function when(spy) {

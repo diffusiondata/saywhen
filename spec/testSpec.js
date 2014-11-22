@@ -146,6 +146,32 @@ describe("a test spy", function() {
         expect(spy("third")).toBe(2);
     });
 
+    it("can set default handler", function() {
+        when(spy).isCalled.thenReturn("foo");
+
+        expect(spy()).toBe("foo");
+        expect(spy("foo", 123, [4, 5, 6])).toBe("foo");
+    });
+
+    it("can set multiple responses to default handler", function() {
+        when(spy).isCalled.thenReturn(1)
+                          .thenReturn(2)
+                          .thenReturn(3);
+
+        expect(spy()).toBe(1);
+        expect(spy()).toBe(2);
+        expect(spy()).toBe(3);
+        expect(spy()).toBe(3);
+    });
+
+    it("can set default handler and specific handler", function() {
+        when(spy).isCalledWith("foo").thenReturn("bar");
+        when(spy).isCalled.thenReturn("bing");
+
+        expect(spy("foo")).toBe("bar");
+        expect(spy("baz")).toBe("bing");
+    });
+
     it("can assign multiple argument matchers", function() {
         when(spy).isCalledWith(jasmine.any(String)).then(function() {
             return "string";
