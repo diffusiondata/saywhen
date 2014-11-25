@@ -1,8 +1,9 @@
 saywhen
 =======
 [![Build Status](https://travis-ci.org/pushtechnology/saywhen.svg?branch=master)](https://travis-ci.org/pushtechnology/saywhen)
+[![npm version](https://badge.fury.io/js/saywhen.svg)](http://badge.fury.io/js/saywhen)
 
-Top up your Jasmine spies with better fake calls.
+Top up your [Jasmine](http://jasmine.github.io/) spies with better fake calls.
 
 Motivated by the fact that using spies in Jasmine requires a lot of boilerplate to perform different actions depending on provided arguments.
 
@@ -33,6 +34,10 @@ when(spy).isCalledWith('something else').thenReturn('a different value');
 ```
 
 ---
+
+###Installation
+
+The easiest way to install ```saywhen``` is via [npm](http://npmjs.org/). Simply run ```npm install saywhen``` in your project directory.
 
 ###Usage
 
