@@ -195,4 +195,14 @@ describe("a test spy", function() {
         expect(spy("foo")).toBe("string");
         expect(spy(123)).toBe("number");
     });
+
+    it("can be applied to spy object methods", function() {
+        var spy = jasmine.createSpyObj('spy', ['fake1', 'fake2', 'fake3']);
+        
+        when(spy.fake1).isCalled.thenReturn(123);
+        when(spy.fake2).isCalledWith(jasmine.any(String)).thenReturn(456);
+
+        expect(spy.fake1()).toBe(123);
+        expect(spy.fake2('foo')).toBe(456);
+    });
 });
