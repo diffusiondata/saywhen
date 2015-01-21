@@ -105,6 +105,37 @@ spy(); // => 3
 spy(); // Throws error
 ```
 
+**Use captors to capture argument values**
+
+```javascript
+var captor = when.captor();
+
+when(spy).isCalledWith(jasmine.any(String), captor);
+
+spy("foo", 123);
+spy("foo", 456);
+spy(null, 789);
+
+captor.values();    // => [123, 456]
+captor.value();     // => 456 (last value)
+```
+
+**Captors can also wrap matchers, to allow only capture specific arguments**
+
+```javascript
+var captor = when.captor(jasmine.any(Number));
+
+when(spy).isCalledWith(captor).then(function(arg) {
+    return arg * 2;
+});
+
+spy(2);     // => 4
+spy(3);     // => 6
+spy("foo")  // => undefined (doesn't match)
+
+captor.values();    // => [2, 3]
+captor.value();     // => 3
+```
 ---
 
 ###Contributing

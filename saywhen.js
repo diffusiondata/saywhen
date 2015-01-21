@@ -1,5 +1,20 @@
 var handlers = [];
 
+
+function defaultMatcher() {
+    return true;
+}
+
+function createMatcher(val) {
+    if (val instanceof Function) {
+        return val;
+    } else if (val && val.jasmineMatches !== undefined) {
+        return val.jasmineMatches.bind(val);
+    } else {
+        return function(arg) { return val === arg };
+    }
+}
+
 function MatcherSet(matchers) {
     matchers = matchers || [];
     var responses = [];
@@ -8,17 +23,10 @@ function MatcherSet(matchers) {
         if (matchers.length !== args.length) return false;
 
         for (var i = 0; i < args.length; ++i) {
-            var matcher = matchers[i], result = false;
-            
-            if (matcher instanceof Function) {
-                result = matcher(args[i]);
-            } else if (matcher.jasmineMatches !== undefined) {
-                result = matcher.jasmineMatches(args[i]);
-            } else  {
-                result = matchers[i] === args[i];
+            // Quickly bail if we can't match
+            if (!matchers[i](args[i])) {
+                return false;
             }
-
-            if (!result) return false;
         }
 
         return true;
@@ -35,6 +43,31 @@ function MatcherSet(matchers) {
     this.addResponse = function(fn) {
         responses.push(fn);
     };
+}
+
+function captor(val) {
+    var matcher = arguments.length === 0 ?  defaultMatcher : createMatcher(val);
+
+    var values = [];
+
+    var matcherProxy = function(arg) {
+        if (matcher(arg)) {
+            values.push(arg);
+            return true;
+        }
+
+        return false;
+    };
+
+    matcherProxy.value = function() {
+        return values[values.length - 1];  
+    };
+
+    matcherProxy.values = function() {
+        return values;
+    };
+
+    return matcherProxy;
 }
 
 function proxy(matcher) {
@@ -61,14 +94,14 @@ function proxy(matcher) {
 }
 
 function CallHandler(spy) {
-    var matchers = [];
+    var matcherSets = [];
     var defaultSet = new MatcherSet();
 
     spy.and.callFake(function() {
         var args = Array.prototype.slice.call(arguments, 0);
 
-        for (var i = 0; i < matchers.length; ++i) {
-            var set = matchers[i];
+        for (var i = 0; i < matcherSets.length; ++i) {
+            var set = matcherSets[i];
             
             if (set.matches(args)) {
                 return set.apply(args);
@@ -79,12 +112,17 @@ function CallHandler(spy) {
     });
 
     this.isCalledWith = function() {
-        var args = Array.prototype.slice.call(arguments, 0);
+        var args  = Array.prototype.slice.call(arguments, 0);
+        var matchers = [];
 
-        var matcher = new MatcherSet(args);
-        matchers.push(matcher);
+        for (var i = 0; i < args.length; ++i) {
+            matchers.push(createMatcher(args[i]));
+        }
 
-        return proxy(matcher);
+        var matcherSet = new MatcherSet(matchers);
+        matcherSets.push(matcherSet);
+
+        return proxy(matcherSet);
     };
 
     this.isCalled = proxy(defaultSet);
@@ -113,5 +151,7 @@ when.is = function(val) {
         return val == arg;
     };
 };
+
+when.captor = captor;
 
 module.exports = when;

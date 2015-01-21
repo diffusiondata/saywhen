@@ -205,4 +205,81 @@ describe("a test spy", function() {
         expect(spy.fake1()).toBe(123);
         expect(spy.fake2('foo')).toBe(456);
     });
+
+    it("can use default argument captor", function() {
+        var captor = when.captor();
+
+        when(spy).isCalledWith(captor);
+
+        spy("foo");
+
+        expect(captor.value()).toBe("foo");
+        expect(captor.values()).toEqual(["foo"]);
+    });
+
+    it("captors can track multiple arguments", function() {
+         var captor = when.captor();
+
+        when(spy).isCalledWith(captor);
+
+        spy("foo");
+        spy("bar");
+
+        expect(captor.value()).toBe("bar");
+        expect(captor.values()).toEqual(["foo", "bar"]);
+    });
+
+    it("captors only capture specific argument position", function() {
+        var captor = when.captor();
+
+        when(spy).isCalledWith("foo", captor);
+
+        spy("foo", 123);
+        spy("bar", 456);
+        spy("foo", 789);
+
+        expect(captor.value()).toBe(789);
+        expect(captor.values()).toEqual([123, 789]);
+    });
+
+    it("captors can take value matchers", function() {
+        var captor = when.captor('foo');
+
+        when(spy).isCalledWith(captor);
+
+        spy('foo');
+        spy('bar');
+        spy('foo');
+
+        expect(captor.values()).toEqual(['foo', 'foo']);
+    });
+
+    it('captors can take jasmine.any matchers', function() {
+        var captor = when.captor(jasmine.any(String));
+
+        when(spy).isCalledWith(captor);
+        
+        spy('foo');
+        spy(12345);
+        spy([678]);
+        spy('bar');
+
+        expect(captor.value()).toBe('bar');
+        expect(captor.values()).toEqual(['foo', 'bar']);
+    });
+
+    it('captors can be used with responses', function() {
+        var captor = when.captor(jasmine.any(Number));
+
+        when(spy).isCalledWith(captor).then(function(arg) { 
+            return arg * 2;
+        });
+
+        expect(spy(1)).toBe(2);
+        expect(spy(3)).toBe(6);
+        expect(spy("foo")).toBe(undefined);
+
+        expect(captor.value()).toBe(3);
+        expect(captor.values()).toEqual([1, 3]);
+    });
 });
