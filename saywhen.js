@@ -52,15 +52,16 @@ function captor(val) {
 
     var matcherProxy = function(arg) {
         if (matcher(arg)) {
-            values.push(arg);
+            append(arg);
             return true;
         }
 
         return false;
     };
 
-    matcherProxy.value = function() {
-        return values[values.length - 1];  
+    var append = function(val) {
+        matcherProxy.latest = val;
+        values.push(val);
     };
 
     matcherProxy.values = function() {

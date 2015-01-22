@@ -213,7 +213,7 @@ describe("a test spy", function() {
 
         spy("foo");
 
-        expect(captor.value()).toBe("foo");
+        expect(captor.latest).toBe("foo");
         expect(captor.values()).toEqual(["foo"]);
     });
 
@@ -225,7 +225,7 @@ describe("a test spy", function() {
         spy("foo");
         spy("bar");
 
-        expect(captor.value()).toBe("bar");
+        expect(captor.latest).toBe("bar");
         expect(captor.values()).toEqual(["foo", "bar"]);
     });
 
@@ -238,7 +238,7 @@ describe("a test spy", function() {
         spy("bar", 456);
         spy("foo", 789);
 
-        expect(captor.value()).toBe(789);
+        expect(captor.latest).toBe(789);
         expect(captor.values()).toEqual([123, 789]);
     });
 
@@ -264,7 +264,7 @@ describe("a test spy", function() {
         spy([678]);
         spy('bar');
 
-        expect(captor.value()).toBe('bar');
+        expect(captor.latest).toBe('bar');
         expect(captor.values()).toEqual(['foo', 'bar']);
     });
 
@@ -279,7 +279,7 @@ describe("a test spy", function() {
         expect(spy(3)).toBe(6);
         expect(spy("foo")).toBe(undefined);
 
-        expect(captor.value()).toBe(3);
+        expect(captor.latest).toBe(3);
         expect(captor.values()).toEqual([1, 3]);
     });
 });

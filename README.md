@@ -117,7 +117,7 @@ spy("foo", 456);
 spy(null, 789);
 
 captor.values();    // => [123, 456]
-captor.value();     // => 456 (last value)
+captor.latest;     // => 456 (last value)
 ```
 
 **Captors can also wrap matchers, to allow only capture specific arguments**
@@ -134,7 +134,7 @@ spy(3);     // => 6
 spy("foo")  // => undefined (doesn't match)
 
 captor.values();    // => [2, 3]
-captor.value();     // => 3
+captor.latest;     // => 3
 ```
 ---
 
