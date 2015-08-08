@@ -1,3 +1,9 @@
+'use strict';
+
+(function() {
+  var root = this;
+  var previous_when = root.when;
+
 var handlers = [];
 
 
@@ -155,4 +161,18 @@ when.is = function(val) {
 
 when.captor = captor;
 
-module.exports = when;
+when.noConflict = function() {
+  root.when = previous_when;
+  return when;
+}
+
+if (typeof exports !== 'undefined' ) {
+  if (typeof module !== 'undefined' && module.exports) {
+    exports = module.exports = when;
+  }
+  exports.when = when;
+} 
+else {
+  root.when = when;
+}
+}).call(this);
