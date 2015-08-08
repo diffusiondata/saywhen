@@ -15,9 +15,7 @@ function createMatcher(val) {
     if (val instanceof Function) {
         return val;
     } else if (val && val.jasmineMatches !== undefined) {
-        return val.jasmineMatches.bind(val);  // Jasmine 2.0 - 2.1
-    } else if (val && val.asymmetricMatch !== undefined) {
-        return val.asymmetricMatch.bind(val); // Jasmine 2.2+
+        return val.jasmineMatches.bind(val);
     } else {
         return function(arg) { return val === arg };
     }
