@@ -10,6 +10,8 @@ function createMatcher(val) {
         return val;
     } else if (val && val.jasmineMatches !== undefined) {
         return val.jasmineMatches.bind(val);
+    } else if (val && val.expectedObject !== undefined) {
+        return val.expectedObject.bind(val);
     } else {
         return function(arg) { return val === arg };
     }
