@@ -1,3 +1,9 @@
+'use strict';
+
+(function() {
+  var root = this;
+  var previous_when = root.when;
+
 var handlers = [];
 
 
@@ -10,6 +16,8 @@ function createMatcher(val) {
         return val;
     } else if (val && val.jasmineMatches !== undefined) {
         return val.jasmineMatches.bind(val);
+    } else if (val && val.asymmetricMatch !== undefined) {
+        return val.asymmetricMatch.bind(val);
     } else {
         return function(arg) { return val === arg };
     }
@@ -155,4 +163,18 @@ when.is = function(val) {
 
 when.captor = captor;
 
-module.exports = when;
+when.noConflict = function() {
+  root.when = previous_when;
+  return when;
+}
+
+if (typeof exports !== 'undefined' ) {
+  if (typeof module !== 'undefined' && module.exports) {
+    exports = module.exports = when;
+  }
+  exports.when = when;
+}
+else {
+  root.when = when;
+}
+}).call(this);
